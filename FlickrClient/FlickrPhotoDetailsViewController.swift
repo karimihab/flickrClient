@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import SDWebImage
 
 class FlickrPhotoDetailsViewController: UIViewController {
     
@@ -19,45 +20,43 @@ class FlickrPhotoDetailsViewController: UIViewController {
     @IBOutlet weak var viewsLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    //TODO::This should wraped as well -> (get photo details) they could be a struct or something
-    var photoSecret:String?
-    var photoId:String?
+    var searchResultPhoto:SearchResultPhoto!
     var photo:UIImage?
     
     override func viewDidLoad() {
-    
-        self.flickrImageView.image = self.photo
 
-        self.startLoadingAnimation()
+        self.loadImageData();
+    }
+    
+    
+    func loadImageData(){
         
-        FlickrService.getPhotoDetails(id: photoId!, secret: photoSecret!, success: { ( photo:NSDictionary) in
+        self.startLoadingAnimation()
+    
+        //Image
+        self.flickrImageView.sd_setImage(with: URL(string:self.searchResultPhoto.photoUrl!), placeholderImage: UIImage(named: "placeholder"))
+        
+        //Details
+        FlickrService.getPhotoDetails(id:"\(searchResultPhoto.id!)", secret:"\(searchResultPhoto.secret!)", success: { ( photo:FlickrPhoto) in
             self.stopLoadingAnimation()
-            let description = photo.object(forKey: "description") as! NSDictionary
-            let descriptionContent = description.object(forKey: "_content") as! String
-            let views = photo.object(forKey: "views") as! String
-            let date = photo.object(forKey: "dates") as! NSDictionary
-            let dateTaken = date.object(forKey: "taken") as! String
-            let title = photo.object(forKey: "title") as! NSDictionary
-            let titleContent = title.object(forKey: "_content") as! String
-            //TODO::add the location as well from the details.            
-            if descriptionContent != "" {
-                self.descriptionLabel.text = "Description: \(descriptionContent)"
+            
+            if let description = photo.photoDescription {
+                self.descriptionLabel.text = description
             }
-            if views != "" {
-                self.viewsLabel.text = "Views: \(views)"
+            if let views = photo.views {
+                self.viewsLabel.text = views
             }
-            if dateTaken != "" {
-                self.dateLabel.text = "Date Taken: \(dateTaken)"
+            if let dateTaken = photo.dateTaken {
+                self.dateLabel.text = dateTaken
             }
-            if titleContent != "" {
-                self.titleLabel.text = titleContent
+            if let title = photo.title {
+                self.titleLabel.text = title
             }
             
-            }) {
-                self.stopLoadingAnimation()
-                print("Failed to get photo details:(")
+        }) {
+            self.stopLoadingAnimation()
+            print("Failed to get photo details:(")
         }
-        
     }
     
     

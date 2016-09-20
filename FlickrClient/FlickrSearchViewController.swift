@@ -16,15 +16,19 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    var photosList = [NSDictionary]()
+    var photosList = [SearchResultPhoto]()
     let searchController = UISearchController(searchResultsController: nil)
-    var searchPage:Int = 1 // used in pagging results
-    var searchTimer:Timer?
+    var searchPage:Int = 1 // used in pagging results from server
+    var searchTimer:Timer? // timer to give user time to type before auto search starts
+    var oldSearchString:String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.activityIndicator.isHidden = true
+        
+        AlertUtil.showAlert(title: "Welcome to Flickr Search :) ", message: "Please enter text to search photos", buttonText: "OK", viewController: self)
+        
         //Search controller
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
@@ -33,33 +37,32 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
         
         //TableView
         self.tableView.delegate = self;
-        
         self.tableView.addInfiniteScroll { (tableView) -> Void in
             self.searchPage = self.searchPage + 1
             self.searchFlickr(searchText: self.searchController.searchBar.text!,page:self.searchPage)
             tableView.finishInfiniteScroll()
         }
     }
-
+    
     
     //MARK: - Search Controller
     
     func updateSearchResults(for searchController: UISearchController) {
         
         let searchString = searchController.searchBar.text
-        if searchController.isActive &&  searchString != "" {
+        if searchController.isActive &&  searchString != ""  && searchString != self.oldSearchString {
             
-            //Empty photosList
-            self.photosList = [NSDictionary]()
-
-            //Gives the user time to type (i.e 2sec) before starting the search
+            self.oldSearchString = searchString!
+            //Empty photosList for the new search
+            self.photosList = [SearchResultPhoto]()
+            
+            //Gives the user time to type (i.e 1sec) before starting the search autoamically
             if self.searchTimer != nil {
                 self.searchTimer?.invalidate()
                 self.searchTimer = nil
             }
             self.searchTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(search), userInfo: searchString, repeats: false)
         }
-        
     }
     
     func search(timer:Timer){
@@ -69,7 +72,8 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func searchFlickr(searchText:String, page:Int){
-        FlickrService.searchForText(searchText: searchText, page: page, success: { (photos:[NSDictionary]) in
+        
+        FlickrService.searchForText(searchText: searchText, page: page, success: { (photos:[SearchResultPhoto]) in
             self.stopLoadingAnimation()
             if self.photosList.count == 0{
                 self.photosList = photos
@@ -83,9 +87,9 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
             print("Faild To Get Results")
         }
     }
-
+    
     // MARK: - Table View
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -100,28 +104,21 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FlickrCell", for: indexPath) as! FlickrTableViewCell
         
-         let cell = tableView.dequeueReusableCell(withIdentifier: "FlickrCell", for: indexPath) as! FlickrTableViewCell
         if searchController.isActive && searchController.searchBar.text != "" {
-            let photo = self.photosList[indexPath.row]
-            cell.flickrImageTitle.text = photo.object(forKey: "title") as! String?
-            let farmId = photo.object(forKey:"farm")!
-            let serverId = photo.object(forKey:"server")!
-            let id = photo.object(forKey:"id")!
-            let secret = photo.object(forKey:"secret")!
-            let photoUrl = "https://farm\(farmId).staticflickr.com/\(serverId)/\(id)_\(secret).jpg"
-            cell.flickrImageView.sd_setImage(with: URL(string:photoUrl), placeholderImage: UIImage(named: "placeholder"))
             
+            let photo = self.photosList[indexPath.row]
+            cell.flickrImageTitle.text = photo.title
+            cell.flickrImageView.sd_setImage(with: URL(string:photo.photoUrl!), placeholderImage: UIImage(named: "placeholder"))
             return cell
             
         } else {
             return cell
         }
-
+        
     }
-    
-    
-    
+
     // MARK: - Segues
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -129,20 +126,18 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
             if let indexPath = self.tableView.indexPathForSelectedRow {
                 let photo = photosList[indexPath.row]
                 let controller = segue.destination as! FlickrPhotoDetailsViewController
-                controller.photoId = photo.object(forKey: "id") as? String
-                controller.photoSecret = photo.object(forKey: "secret") as? String
+                controller.searchResultPhoto = photo
                 let cell = self.tableView.cellForRow(at: indexPath) as! FlickrTableViewCell
                 controller.photo = cell.flickrImageView.image
             }
         }
     }
-    
-    
+
     // MARK: - Loading Animation
     
     func startLoadingAnimation(){
         self.activityIndicator.isHidden = false
-        self.activityIndicator.startAnimating()        
+        self.activityIndicator.startAnimating()
     }
     
     func stopLoadingAnimation(){

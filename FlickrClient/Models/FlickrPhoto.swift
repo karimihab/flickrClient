@@ -8,6 +8,21 @@
 
 import Foundation
 
-class FlickrPhoto : NSObject {
+struct FlickrPhoto {
+
+    var title:String?
+    var photoDescription:String?
+    var dateTaken:String?
+    var views:String?
     
+}
+
+struct SearchResultPhoto {
+    
+    var title:String?
+    var farmId:String?
+    var serverId:String?
+    var photoUrl:String?
+    var secret:String?
+    var id:String?
 }

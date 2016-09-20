@@ -39,6 +39,11 @@ class URLBuilderUtil {
         let photoDetailsUrl:String = photoDetailsBaseUrl + apiString + secretString + photoIdString + responseFormat + jsonCallbackString
         return photoDetailsUrl
     }
+    
+    class func getPhotoURL(farmId:String, serverId:String, id:String, secret:String ) -> String {
+        
+        return "https://farm\(farmId).staticflickr.com/\(serverId)/\(id)_\(secret).jpg"
+    }
 }
 
 

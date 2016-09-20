@@ -15,14 +15,13 @@ class FlickrService {
     
     
     //Search for photos
-    static func searchForText(searchText:String, page:Int, success: @escaping ([NSDictionary]) -> Void , failure: @escaping () -> Void) {
+    static func searchForText(searchText:String, page:Int, success: @escaping ([SearchResultPhoto]) -> Void , failure: @escaping () -> Void) {
         
         Alamofire.request(URLBuilderUtil.getSearchURL(searchTerm:searchText,page:page)).responseJSON { response in
             
             if let result = response.result.value {
                 let jsonResult = result as! NSDictionary
-                if let photosResultObject = jsonResult.object(forKey: "photos") as! NSDictionary? {
-                    let photosList = photosResultObject.object(forKey: "photo") as! [NSDictionary]
+                if let photosList = JsonUtil.parseSearchResultJSON(json: jsonResult) {
                     success(photosList)
                 }
                 else{
@@ -36,14 +35,14 @@ class FlickrService {
     }
     
     //Get Photo details
-    static func getPhotoDetails(id:String, secret:String, success: @escaping (NSDictionary) -> Void , failure: @escaping () -> Void) {
+    static func getPhotoDetails(id:String, secret:String, success: @escaping (FlickrPhoto) -> Void , failure: @escaping () -> Void) {
         
         Alamofire.request(URLBuilderUtil.getPhotoDetailsURL(photoId:id, photoSecret:secret)).responseJSON { response in
             
             if let result = response.result.value {
                 let jsonResult = result as! NSDictionary
-                if let photo = jsonResult.object(forKey: "photo") as! NSDictionary?{
-                    success(photo)
+                if let flickrPhoto = JsonUtil.parsePhotoObjectJSON(json: jsonResult){
+                    success(flickrPhoto)
                 }else{
                     failure()
                 }
