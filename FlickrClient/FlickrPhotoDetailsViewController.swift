@@ -61,7 +61,7 @@ class FlickrPhotoDetailsViewController: UIViewController {
                 let title = photo.object(forKey: "title") as! NSDictionary
                 let titleContent = title.object(forKey: "_content") as! String
 
-//                Location 7lwa
+//                add the location as well from the details.
                 
                 if descriptionContent != "" {
                         self.descriptionLabel.text = "Description: \(descriptionContent)"

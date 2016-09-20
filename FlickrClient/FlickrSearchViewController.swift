@@ -12,24 +12,13 @@ import SDWebImage
 
 class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UISearchResultsUpdating {
     
-    
-    @available(iOS 8.0, *)
-    public func updateSearchResults(for searchController: UISearchController) {
-        
-        if searchController.isActive && searchController.searchBar.text != "" {
-            filterContentForSearchText(searchText: searchController.searchBar.text!)
-        }
-        
-    }
-
-    
     @IBOutlet weak var tableView: UITableView!
     var photosList = [NSDictionary]()
     let searchController = UISearchController(searchResultsController: nil)
+    var page:Int = 0 // used in pagging results
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         //Search controller
         searchController.searchResultsUpdater = self
@@ -37,13 +26,8 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
         definesPresentationContext = true
         self.tableView.tableHeaderView = searchController.searchBar
         
-        
         //TableView
         self.tableView.delegate = self;
-        
-        //API
-//        self.searchFlickr(tag:"Cairo")
-        
     }
     
     func searchFlickr(tag:String) {
@@ -61,29 +45,13 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
         
         Alamofire.request(baseURL + apiString + searchString + responseFormat + jsonCallbackString).responseJSON { response in
             
-            print("---------------------------------------------------------------")
-            //            print("original URL request : \(response.request)")
-            //            print("---------------------------------------------------------------")
-            //            print("HTTP URL response : \(response.response)")
-            //            print("---------------------------------------------------------------")
-            //            print("server data : \(response.data)")
-            //            print("---------------------------------------------------------------")
-            //            print("result of response serialization : \(response.result)")
-            //            print("---------------------------------------------------------------")
-            //
-            ////            if let data = data, let utf8Text = String(data: data, encoding: .utf8) {
-            //                print("Data: \(utf8Text)")
-            //            }
             if let result = response.result.value {
                 let jsonResult = result as! NSDictionary
                 let photosResultObject = jsonResult.object(forKey: "photos") as! NSDictionary
                 let photosList = photosResultObject.object(forKey: "photo") as! [NSDictionary]
-                //                var photos:[String]
                 self.photosList = photosList
                 print("self.photosList:::::::\(self.photosList)")
                 self.tableView.reloadData()
-                //                print(photosList.firstObject)
-                print("---------------------------------------------------------------")
             }
             
         }
@@ -95,6 +63,17 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
         
         self.searchFlickr(tag: searchText)
     }
+    
+    
+    @available(iOS 8.0, *)
+    public func updateSearchResults(for searchController: UISearchController) {
+        
+        if searchController.isActive && searchController.searchBar.text != "" {
+            filterContentForSearchText(searchText: searchController.searchBar.text!)
+        }
+        
+    }
+
     
     // MARK: - Table View
 
