@@ -11,6 +11,6 @@ import UIKit
 class FlickrTableViewCell : UITableViewCell {
     
     @IBOutlet weak var flickrImageView: UIImageView!
-    @IBOutlet weak var flickrImageTitle: UILabel!
+    @IBOutlet weak var flickrImageTitle: UILabel!    
 
 }

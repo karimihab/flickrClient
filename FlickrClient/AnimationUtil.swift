@@ -1,5 +1,5 @@
 //
-//  FlickrPhoto.swift
+//  AnimationUtil.swift
 //  FlickrClient
 //
 //  Created by Karim Ihab on 20/09/16.
@@ -7,7 +7,3 @@
 //
 
 import Foundation
-
-class FlickrPhoto : NSObject {
-    
-}
