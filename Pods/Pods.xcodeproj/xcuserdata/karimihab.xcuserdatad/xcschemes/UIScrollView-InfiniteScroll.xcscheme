@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "99D32F545C18B2A203525BF8194F8AEE"
-               BuildableName = "Pods_FlickrClient.framework"
-               BlueprintName = "Pods-FlickrClient"
+               BlueprintIdentifier = "C0998219735E929DB6AA3C5A5F39826E"
+               BuildableName = "UIScrollView_InfiniteScroll.framework"
+               BlueprintName = "UIScrollView-InfiniteScroll"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "99D32F545C18B2A203525BF8194F8AEE"
-            BuildableName = "Pods_FlickrClient.framework"
-            BlueprintName = "Pods-FlickrClient"
+            BlueprintIdentifier = "C0998219735E929DB6AA3C5A5F39826E"
+            BuildableName = "UIScrollView_InfiniteScroll.framework"
+            BlueprintName = "UIScrollView-InfiniteScroll"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

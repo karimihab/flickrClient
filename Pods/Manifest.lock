@@ -3,15 +3,18 @@ PODS:
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
+  - UIScrollView-InfiniteScroll (0.9.1)
 
 DEPENDENCIES:
   - Alamofire (~> 4.0)
   - SDWebImage (~> 3.8)
+  - UIScrollView-InfiniteScroll
 
 SPEC CHECKSUMS:
   Alamofire: fef59f00388f267e52d9b432aa5d93dc97190f14
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  UIScrollView-InfiniteScroll: 14e204c50ca4040467e1cbfa141dad7a18919b56
 
-PODFILE CHECKSUM: bec6e8bda220e6a0f2e1dbc33421bb183d428398
+PODFILE CHECKSUM: 5ff0b7fc14fabe77fab7f25d87b0c4aeda05cf4d
 
 COCOAPODS: 1.0.1

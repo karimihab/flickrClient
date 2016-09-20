@@ -9,13 +9,14 @@
 import UIKit
 import  Alamofire
 import SDWebImage
+import UIScrollView_InfiniteScroll
 
 class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UISearchResultsUpdating {
     
     @IBOutlet weak var tableView: UITableView!
     var photosList = [NSDictionary]()
     let searchController = UISearchController(searchResultsController: nil)
-    var page:Int = 0 // used in pagging results
+    var searchPage:Int = 1 // used in pagging results
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,9 +29,18 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
         
         //TableView
         self.tableView.delegate = self;
+        
+        self.tableView.addInfiniteScroll { (tableView) -> Void in
+            
+            self.searchPage = self.searchPage + 1
+            self.searchFlickr(tag: self.searchController.searchBar.text!, page: self.searchPage)
+
+            tableView.finishInfiniteScroll()
+        }
     }
     
-    func searchFlickr(tag:String) {
+    func searchFlickr(tag:String, page:Int) {
+        print("Tag:\(tag) & page:\(page)")
         let apiKey = "0f911b777e2e4a198a2ee4e6e4ea1fdd"
         let tags = tag
 //        let text = tag
@@ -40,18 +50,24 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
 //        let searchTextString = "&text=\(text)"
         let responseFormat = "&format=json"
         let jsonCallbackString = "&nojsoncallback=1"
+        let pageString = "&page=\(page)"
         
-        
-        
-        Alamofire.request(baseURL + apiString + searchString + responseFormat + jsonCallbackString).responseJSON { response in
+        Alamofire.request(baseURL + apiString + searchString + responseFormat + pageString + jsonCallbackString).responseJSON { response in
             
             if let result = response.result.value {
                 let jsonResult = result as! NSDictionary
+                print("jsonResult:::::::\(jsonResult)")
                 let photosResultObject = jsonResult.object(forKey: "photos") as! NSDictionary
                 let photosList = photosResultObject.object(forKey: "photo") as! [NSDictionary]
-                self.photosList = photosList
-                print("self.photosList:::::::\(self.photosList)")
+                
+                if self.photosList.count == 0{
+                    self.photosList = photosList
+                }else{
+                    self.photosList.append(contentsOf: photosList)
+                }
+                
                 self.tableView.reloadData()
+                self.tableView.finishInfiniteScroll()
             }
             
         }
@@ -59,17 +75,13 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
     
     //MARK: - Search Controller
     
-    func filterContentForSearchText(searchText: String, scope: String = "All") {
-        
-        self.searchFlickr(tag: searchText)
-    }
-    
     
     @available(iOS 8.0, *)
     public func updateSearchResults(for searchController: UISearchController) {
         
         if searchController.isActive && searchController.searchBar.text != "" {
-            filterContentForSearchText(searchText: searchController.searchBar.text!)
+            self.photosList = [NSDictionary]()
+            self.searchFlickr(tag: searchController.searchBar.text!, page: 1)
         }
         
     }

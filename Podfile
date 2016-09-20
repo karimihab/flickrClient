@@ -5,4 +5,5 @@ use_frameworks!
 target 'FlickrClient' do
     pod 'Alamofire', '~> 4.0'
     pod 'SDWebImage', '~>3.8'
+    pod 'UIScrollView-InfiniteScroll'
 end
