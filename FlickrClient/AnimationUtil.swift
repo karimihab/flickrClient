@@ -6,4 +6,9 @@
 //  Copyright © 2016 Karim Ihab. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+class AnimationUtil:NSObject {
+
+    
+}

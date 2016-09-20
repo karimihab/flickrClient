@@ -14,13 +14,17 @@ import UIScrollView_InfiniteScroll
 class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UISearchResultsUpdating {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     var photosList = [NSDictionary]()
     let searchController = UISearchController(searchResultsController: nil)
     var searchPage:Int = 1 // used in pagging results
-
+    var searchTimer:Timer?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.activityIndicator.isHidden = true
         //Search controller
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
@@ -40,20 +44,26 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func searchFlickr(tag:String, page:Int) {
-        print("Tag:\(tag) & page:\(page)")
+        
+//        print("Tag:\(tag) & page:\(page)")
         let apiKey = "0f911b777e2e4a198a2ee4e6e4ea1fdd"
-        let tags = tag
-//        let text = tag
+//        let tags = tag
+        let text = tag
         let baseURL = "https://api.flickr.com/services/rest/?&method=flickr.photos.search"
         let apiString = "&api_key=\(apiKey)"
-        let searchString = "&tags=\(tags)"
-//        let searchTextString = "&text=\(text)"
+//        let searchString = "&tags=\(tags)"
+        let searchTextString = "&text=\(text)"
+        let encodedsearchText = searchTextString.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
         let responseFormat = "&format=json"
         let jsonCallbackString = "&nojsoncallback=1"
         let pageString = "&page=\(page)"
         
-        Alamofire.request(baseURL + apiString + searchString + responseFormat + pageString + jsonCallbackString).responseJSON { response in
-            
+        let searchUrl = baseURL + apiString + encodedsearchText + responseFormat + pageString + jsonCallbackString
+        self.startLoadingAnimation()
+        print("================>:\(searchUrl)")
+        Alamofire.request(searchUrl).responseJSON { response in
+            print("=======:Erro:\(response.result.error?.localizedDescription)")
+            self.stopLoadingAnimation()
             if let result = response.result.value {
                 let jsonResult = result as! NSDictionary
                 print("jsonResult:::::::\(jsonResult)")
@@ -75,18 +85,29 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
     
     //MARK: - Search Controller
     
-    
-    @available(iOS 8.0, *)
-    public func updateSearchResults(for searchController: UISearchController) {
+    func updateSearchResults(for searchController: UISearchController) {
         
-        if searchController.isActive && searchController.searchBar.text != "" {
+        let searchString = searchController.searchBar.text
+        if searchController.isActive &&  searchString != "" {
+            
+            //Empty photosList
             self.photosList = [NSDictionary]()
-            self.searchFlickr(tag: searchController.searchBar.text!, page: 1)
+
+            //Gives the user time to type (i.e 2sec) before starting the search
+            if self.searchTimer != nil {
+                self.searchTimer?.invalidate()
+                self.searchTimer = nil
+            }
+            self.searchTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(search), userInfo: searchString, repeats: false)
         }
         
     }
-
     
+    func search(timer:Timer){
+        let tag = timer.userInfo as! String
+        self.searchFlickr(tag: tag, page: 1)
+    }
+
     // MARK: - Table View
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -101,7 +122,7 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
         return 0
     }
     
-    internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
          let cell = tableView.dequeueReusableCell(withIdentifier: "FlickrCell", for: indexPath) as! FlickrTableViewCell
@@ -118,24 +139,11 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
             cell.flickrImageView.sd_setImage(with: URL(string:photoUrl), placeholderImage: UIImage(named: "placeholder"))
             
             return cell
+            
         } else {
             return cell
         }
-//                
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "FlickrCell", for: indexPath) as! FlickrTableViewCell
-//        
-//        let photo = self.photosList[indexPath.row]
-//        cell.flickrImageTitle.text = photo.object(forKey: "title") as! String?
-//        let farmId = photo.object(forKey:"farm")!
-//        let serverId = photo.object(forKey:"server")!
-//        let id = photo.object(forKey:"id")!
-//        let secret = photo.object(forKey:"secret")!
-//        let photoUrl = "https://farm\(farmId).staticflickr.com/\(serverId)/\(id)_\(secret).jpg"
-//        print("photoUrl::::::::\(photoUrl)")
-//        
-//        cell.flickrImageView.sd_setImage(with: URL(string:photoUrl), placeholderImage: UIImage(named: "placeholder"))
-//
-//        return cell
+
     }
     
     
@@ -153,6 +161,19 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
                 controller.photo = cell.flickrImageView.image
             }
         }
+    }
+    
+    
+    // MARK: - Loading Animation
+    
+    func startLoadingAnimation(){
+        self.activityIndicator.isHidden = false
+        self.activityIndicator.startAnimating()        
+    }
+    
+    func stopLoadingAnimation(){
+        self.activityIndicator.stopAnimating()
+        self.activityIndicator.isHidden = true
     }
     
 }

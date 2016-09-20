@@ -62,17 +62,21 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="ncH-gN-1vZ"/>
                                 </connections>
                             </tableView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="uY8-Io-0RR"/>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="KNG-dD-bFI" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="G3v-KX-ZRG"/>
+                            <constraint firstItem="uY8-Io-0RR" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="RS8-oQ-j4N"/>
                             <constraint firstItem="KNG-dD-bFI" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="X1j-C0-efo"/>
                             <constraint firstItem="KNG-dD-bFI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fkY-fw-Mox"/>
                             <constraint firstItem="KNG-dD-bFI" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="kfH-j0-Wmr"/>
+                            <constraint firstItem="uY8-Io-0RR" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ppB-OF-jBx"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Flickr Search" id="jw5-S2-GS7"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="uY8-Io-0RR" id="l2L-ik-BT9"/>
                         <outlet property="tableView" destination="KNG-dD-bFI" id="s6Z-jb-cjm"/>
                     </connections>
                 </viewController>
@@ -117,9 +121,11 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Ekk-FD-34C"/>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Ekk-FD-34C" firstAttribute="centerX" secondItem="gar-wE-jII" secondAttribute="centerX" id="2qW-pB-H2y"/>
                             <constraint firstAttribute="trailingMargin" secondItem="xcT-xY-Whb" secondAttribute="trailing" constant="1" id="Dg0-I5-5SK"/>
                             <constraint firstItem="KWt-H4-b3Y" firstAttribute="trailing" secondItem="K1Q-Yx-WF7" secondAttribute="trailing" id="FaS-8h-EHI"/>
                             <constraint firstItem="xcT-xY-Whb" firstAttribute="centerX" secondItem="gar-wE-jII" secondAttribute="centerX" id="Kbh-ze-QE5"/>
@@ -128,6 +134,7 @@
                             <constraint firstItem="K1Q-Yx-WF7" firstAttribute="top" secondItem="BGp-cR-Neq" secondAttribute="bottom" constant="8" id="cUN-lB-DPP"/>
                             <constraint firstItem="xcT-xY-Whb" firstAttribute="top" secondItem="g5G-ff-LUE" secondAttribute="bottom" constant="20" id="htl-Pn-Prb"/>
                             <constraint firstItem="xcT-xY-Whb" firstAttribute="leading" secondItem="gar-wE-jII" secondAttribute="leadingMargin" constant="1" id="kFO-Yk-RAT"/>
+                            <constraint firstItem="Ekk-FD-34C" firstAttribute="centerY" secondItem="gar-wE-jII" secondAttribute="centerY" id="kq2-3C-aAo"/>
                             <constraint firstItem="BGp-cR-Neq" firstAttribute="leading" secondItem="ceB-Ij-zO7" secondAttribute="leading" id="ksg-qA-wZy"/>
                             <constraint firstItem="KWt-H4-b3Y" firstAttribute="leading" secondItem="K1Q-Yx-WF7" secondAttribute="leading" id="osE-CP-kTb"/>
                             <constraint firstItem="K1Q-Yx-WF7" firstAttribute="trailing" secondItem="BGp-cR-Neq" secondAttribute="trailing" id="pMo-cz-iyZ"/>
@@ -138,6 +145,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="Ekk-FD-34C" id="Gd0-MA-00v"/>
                         <outlet property="dateLabel" destination="K1Q-Yx-WF7" id="0b0-Jj-0F6"/>
                         <outlet property="descriptionLabel" destination="BGp-cR-Neq" id="NuD-3h-qyA"/>
                         <outlet property="flickrImageView" destination="ceB-Ij-zO7" id="6NG-DW-jKG"/>

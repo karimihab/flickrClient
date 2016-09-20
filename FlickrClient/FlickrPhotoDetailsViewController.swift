@@ -18,6 +18,7 @@ class FlickrPhotoDetailsViewController: UIViewController {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var viewsLabel: UILabel!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     //This should wraped as well -> (get photo details) they could be a struct or something
     var photoSecret:String?
     var photoId:String?
@@ -36,19 +37,11 @@ class FlickrPhotoDetailsViewController: UIViewController {
         let photoIdString = "&photo_id=\(self.photoId!)"
         
         let url:String = baseURL + apiString + secretString + photoIdString + responseFormat + jsonCallbackString
-        print("URL:\(url)")
+        
+        self.startLoadingAnimation()
         Alamofire.request(url).responseJSON { response in
 
-            
-            print("---------------------------------------------------------------")
-            print("original URL request : \(response.request)")
-            print("---------------------------------------------------------------")
-            print("HTTP URL response : \(response.response)")
-            print("---------------------------------------------------------------")
-            print("server data : \(response.data)")
-            print("---------------------------------------------------------------")
-            print("result of response serialization : \(response.result)")
-            print("---------------------------------------------------------------")
+            self.stopLoadingAnimation()
             
             if let result = response.result.value {
                 let jsonResult = result as! NSDictionary
@@ -80,5 +73,18 @@ class FlickrPhotoDetailsViewController: UIViewController {
             
         }
         
+    }
+    
+    
+    // MARK: - Loading Animation
+    
+    func startLoadingAnimation(){
+        self.activityIndicator.isHidden = false
+        self.activityIndicator.startAnimating()
+    }
+    
+    func stopLoadingAnimation(){
+        self.activityIndicator.stopAnimating()
+        self.activityIndicator.isHidden = true
     }
 }
