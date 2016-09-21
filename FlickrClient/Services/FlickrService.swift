@@ -15,7 +15,7 @@ class FlickrService {
     
     
     //Search for photos
-    static func searchForText(searchText:String, page:Int, success: @escaping ([SearchResultPhoto]) -> Void , failure: @escaping (String?) -> Void) {
+    static func searchForPhotos(searchText:String, page:Int, success: @escaping ([SearchResultPhoto]) -> Void , failure: @escaping (String?) -> Void) {
         Alamofire.request(URLBuilderUtil.getSearchURL(searchTerm:searchText,page:page)).responseJSON { response in
             
             if let result = response.result.value {

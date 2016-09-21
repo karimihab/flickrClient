@@ -79,7 +79,7 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
             return
         }
         
-        FlickrService.searchForText(searchText: searchText, page: page, success: { (photos:[SearchResultPhoto]) in
+        FlickrService.searchForPhotos(searchText: searchText, page: page, success: { (photos:[SearchResultPhoto]) in
             self.stopLoadingAnimation()
             
             if photos.count == 0 {

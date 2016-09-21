@@ -66,6 +66,8 @@ class URLBuilderUtilTests: XCTestCase {
         
         XCTAssertEqual(expectedPhotoUrl, photoUrl, "The photo URL doesn't match the expected one")        
     }
+    
+        
 
     
 }
