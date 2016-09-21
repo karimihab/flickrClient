@@ -28,7 +28,6 @@ class FlickrPhotoDetailsViewController: UIViewController {
         self.loadImageData();
     }
     
-    
     func loadImageData(){
         
         if NetworkUtil.isOffline(){

@@ -13,9 +13,9 @@ import Foundation
 class URLBuilderUtil {
     
     private static let flickrBaseUrl = "https://api.flickr.com/services/rest/?"
-    private static let searchBaseUrl = "\(flickrBaseUrl)&method=flickr.photos.search"
-    private static let photoDetailsBaseUrl = "\(flickrBaseUrl)&method=flickr.photos.getinfo"
-    private static let apiString = "&api_key=\(Constants.apiKey)"
+    static let searchBaseUrl = "\(flickrBaseUrl)&method=flickr.photos.search"
+    static let photoDetailsBaseUrl = "\(flickrBaseUrl)&method=flickr.photos.getinfo"
+    static let apiString = "&api_key=\(Constants.apiKey)"
     
     class func getSearchURL(searchTerm:String, page:Int, nojsoncallback:Int = 1, format:String = "json") -> String{
         

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import  Alamofire
+import Alamofire
 import SDWebImage
 import UIScrollView_InfiniteScroll
 
