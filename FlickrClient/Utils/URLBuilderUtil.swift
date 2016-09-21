@@ -30,7 +30,7 @@ class URLBuilderUtil {
     }
     
     class func getPhotoDetailsURL(photoId:String, photoSecret:String, nojsoncallback:Int = 1, format:String = "json") -> String {
-  
+        
         let responseFormat = "&format=\(format)"
         let jsonCallbackString = "&nojsoncallback=\(nojsoncallback)"
         let secretString = "&secret=\(photoSecret)"

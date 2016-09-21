@@ -15,8 +15,7 @@ class FlickrService {
     
     
     //Search for photos
-    static func searchForText(searchText:String, page:Int, success: @escaping ([SearchResultPhoto]) -> Void , failure: @escaping () -> Void) {
-        
+    static func searchForText(searchText:String, page:Int, success: @escaping ([SearchResultPhoto]) -> Void , failure: @escaping (String?) -> Void) {
         Alamofire.request(URLBuilderUtil.getSearchURL(searchTerm:searchText,page:page)).responseJSON { response in
             
             if let result = response.result.value {
@@ -25,17 +24,17 @@ class FlickrService {
                     success(photosList)
                 }
                 else{
-                    failure()
+                    failure(response.result.error?.localizedDescription)
                 }
             }else{
-                failure()
+                failure(response.result.error?.localizedDescription)
             }
         }
         
     }
     
     //Get Photo details
-    static func getPhotoDetails(id:String, secret:String, success: @escaping (FlickrPhoto) -> Void , failure: @escaping () -> Void) {
+    static func getPhotoDetails(id:String, secret:String, success: @escaping (FlickrPhoto) -> Void , failure: @escaping (String?) -> Void) {
         
         Alamofire.request(URLBuilderUtil.getPhotoDetailsURL(photoId:id, photoSecret:secret)).responseJSON { response in
             
@@ -44,10 +43,10 @@ class FlickrService {
                 if let flickrPhoto = JsonUtil.parsePhotoObjectJSON(json: jsonResult){
                     success(flickrPhoto)
                 }else{
-                    failure()
+                    failure(response.result.error?.localizedDescription)
                 }
             }else{
-                failure()
+                failure(response.result.error?.localizedDescription)
             }
         }
         

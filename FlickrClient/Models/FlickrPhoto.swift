@@ -9,7 +9,7 @@
 import Foundation
 
 struct FlickrPhoto {
-
+    
     var title:String?
     var photoDescription:String?
     var dateTaken:String?

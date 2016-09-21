@@ -73,8 +73,20 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
     
     func searchFlickr(searchText:String, page:Int){
         
+        if NetworkUtil.isOffline(){
+            AlertUtil.showAlert(title: "Oops :(", message: "Please check your internet connection, seems offline!", buttonText: "OK", viewController: self)
+            self.stopLoadingAnimation()
+            return
+        }
+        
         FlickrService.searchForText(searchText: searchText, page: page, success: { (photos:[SearchResultPhoto]) in
             self.stopLoadingAnimation()
+            
+            if photos.count == 0 {
+                 AlertUtil.showAlert(title: "Oops :(", message: "No results for your search, please try different words", buttonText: "OK", viewController: self)
+                return
+            }
+            
             if self.photosList.count == 0{
                 self.photosList = photos
             }else{
@@ -82,10 +94,13 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
             }
             self.tableView.reloadData()
             
-        }) {
+        }) { (error:String?) in
             self.stopLoadingAnimation()
-            print("Faild To Get Results")
+            if let error = error{
+                AlertUtil.showAlert(title: "Oops :(", message: error, buttonText: "OK", viewController: self)
+            }
         }
+        
     }
     
     // MARK: - Table View
@@ -118,7 +133,7 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
         }
         
     }
-
+    
     // MARK: - Segues
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -132,7 +147,7 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
             }
         }
     }
-
+    
     // MARK: - Loading Animation
     
     func startLoadingAnimation(){

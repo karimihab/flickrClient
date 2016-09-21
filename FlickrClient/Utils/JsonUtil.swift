@@ -9,7 +9,7 @@
 import Foundation
 
 //Seprating Json Prasing in a seprate class enables us to change the way to parse Json without affecting our services
-//for Example instead of simple Structs we can have json mapped to object classes 
+//for Example instead of simple Structs we can have json mapped to object classes
 //we can use third party libs (swiftJSON,...etc)
 
 class JsonUtil {
@@ -54,7 +54,7 @@ class JsonUtil {
         }else{
             return nil
         }
-
+        
     }
     
 }

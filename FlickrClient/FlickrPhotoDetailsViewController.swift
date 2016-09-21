@@ -24,15 +24,21 @@ class FlickrPhotoDetailsViewController: UIViewController {
     var photo:UIImage?
     
     override func viewDidLoad() {
-
+        
         self.loadImageData();
     }
     
     
     func loadImageData(){
         
+        if NetworkUtil.isOffline(){
+            AlertUtil.showAlert(title: "Oops :(", message: "Please check your internet connection, seems offline!", buttonText: "OK", viewController: self)
+            self.stopLoadingAnimation()
+            return
+        }
+
         self.startLoadingAnimation()
-    
+        
         //Image
         self.flickrImageView.sd_setImage(with: URL(string:self.searchResultPhoto.photoUrl!), placeholderImage: UIImage(named: "placeholder"))
         
@@ -53,9 +59,12 @@ class FlickrPhotoDetailsViewController: UIViewController {
                 self.titleLabel.text = title
             }
             
-        }) {
+        }) { (error:String?) in
             self.stopLoadingAnimation()
             print("Failed to get photo details:(")
+            if let error = error{
+                AlertUtil.showAlert(title: "Oops :(", message: error, buttonText: "OK", viewController: self)
+            }
         }
     }
     
