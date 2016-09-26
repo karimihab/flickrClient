@@ -18,7 +18,7 @@ class FlickrSearchViewController: UIViewController, UITableViewDelegate, UITable
     
     var photosList = [SearchResultPhoto]()
     let searchController = UISearchController(searchResultsController: nil)
-    var searchPage:Int = 1 // used in pagging results from server
+    var searchPage:Int = 1 // used in paging results from server
     var searchTimer:Timer? // timer to give user time to type before auto search starts
     var oldSearchString:String = ""
     
