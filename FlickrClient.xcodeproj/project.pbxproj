@@ -293,7 +293,7 @@
 				TargetAttributes = {
 					5AB795421D902CDE0072B0D2 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 3W3534QBDV;
+						DevelopmentTeam = SFWNSYN8YK;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 					};
@@ -306,7 +306,6 @@
 					};
 					5AB795611D902CDE0072B0D2 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 3W3534QBDV;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 5AB795421D902CDE0072B0D2;
@@ -577,11 +576,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 3W3534QBDV;
+				DEVELOPMENT_TEAM = SFWNSYN8YK;
 				INFOPLIST_FILE = FlickrClient/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.mobiquity.FlickrClient;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobiquityinc.FlickrClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -593,11 +593,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 3W3534QBDV;
+				DEVELOPMENT_TEAM = SFWNSYN8YK;
 				INFOPLIST_FILE = FlickrClient/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.mobiquity.FlickrClient;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mobiquityinc.FlickrClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -640,7 +641,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 3W3534QBDV;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FlickrClientUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobiquity.FlickrClientUITests;
@@ -655,7 +656,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 3W3534QBDV;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = FlickrClientUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mobiquity.FlickrClientUITests;
